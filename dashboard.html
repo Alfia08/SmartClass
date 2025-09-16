@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SmartClass Dashboard</title>
+
+<!-- Bootstrap CSS & Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+
+<style>
+  /* Background */
+  body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+    color: #1e293b;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url("image2.jpg") no-repeat center center/cover;
+    filter: blur(10px) brightness(0.65);
+    z-index: -1;
+  }
+
+   /* Navbar */
+    .navbar {
+      background: rgba(34, 74, 190, 0.9);
+      backdrop-filter: blur(6px);
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.3rem;
+      color: #fff !important;
+    }
+    .navbar-brand img {
+      width: 32px;
+      height: 32px;
+      margin-right: 8px;
+    }
+    .navbar-nav .nav-link {
+      color: #f8f9fc !important;
+      font-weight: 500;
+      margin: 0 6px;
+      transition: 0.3s;
+    }
+    .navbar-nav .nav-link:hover {
+      color: #ffd966 !important;
+    }
+    .active-link {
+      color: #ffd966 !important;
+    }
+
+  /* Layout Container */
+  .page-container {
+    max-width: 1280px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+
+  /* Header */
+  .dashboard-header {
+    text-align: center;
+    margin-bottom: 45px;
+  }
+  .dashboard-header h1 {
+    font-weight: 800;
+    font-size: 2.8rem;
+    color: #334155;
+    margin-bottom: 12px;
+  }
+  .dashboard-header p {
+    font-size: 1.15rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  /* Summary Cards Grid */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+  }
+  .summary-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    box-shadow: 0 8px 24px rgb(71 85 105 / 0.1);
+    cursor: pointer;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .summary-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 40px rgb(96 165 250 / 0.8);
+  }
+  .summary-icon {
+    font-size: 3.6rem;
+    color: #1e40af; /* blue-900 */
+  }
+  .summary-details {
+    display: flex;
+    flex-direction: column;
+  }
+  .summary-info {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #1e293b;
+    margin-bottom: 6px;
+  }
+  .summary-number {
+    font-weight: 900;
+    font-size: 2.6rem;
+    color: #3b82f6; /* blue-500 */
+  }
+
+  /* Highlights for clickable areas */
+  .summary-card:focus,
+  .summary-card:active {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.6);
+  }
+
+  /* Notices & Notifications */
+  .notice-board, .notifications-board {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 30px 35px;
+    box-shadow: 0 8px 30px rgb(203 213 225 / 0.4);
+    max-height: 360px;
+    overflow-y: auto;
+  }
+  .notice-board h4, .notifications-board h4 {
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-bottom: 28px;
+    letter-spacing: 0.04em;
+  }
+  .notice-item, .notification-item {
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding-left: 22px;
+    margin-bottom: 18px;
+    border-left: 5px solid #3b82f6;
+    color: #334155;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    user-select: none;
+  }
+  .notice-item:hover, .notification-item:hover {
+    background-color: #dbeafe;
+    color: #1e40af;
+    border-left-color: #2563eb;
+  }
+
+  /* Timetable */
+  .timetable-overview {
+    background: #f8fafc;
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgb(203 213 225 / 0.5);
+    padding: 30px 40px;
+    max-height: 360px;
+    overflow-y: auto;
+  }
+  .timetable-overview h4 {
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-bottom: 24px;
+    letter-spacing: 0.04em;
+  }
+  .schedule-list {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+    font-weight: 600;
+    color: #334155;
+  }
+  .schedule-list li {
+    background: #bfdbfe;
+    border-radius: 14px;
+    margin-bottom: 16px;
+    padding: 18px 24px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .schedule-list li:hover {
+    background-color: #93c5fd;
+    color: #1e40af;
+  }
+
+  /* Search Inputs */
+  .search-bar {
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid #a5b4fc;
+    padding: 14px 18px;
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+    color: #334155;
+  }
+  .search-bar::placeholder {
+    color: #7c3aed;
+  }
+  .search-bar:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 10px #6366f1;
+    background-color: #eef2ff;
+  }
+
+  /* Footer */
+  footer {
+    background: #1e3a8a;
+    color: #e0e7ff;
+    padding: 30px 10px;
+    text-align: center;
+    font-weight: 700;
+  }
+  footer a {
+    color: #c7d2fe;
+    text-decoration: none;
+    margin: 0 14px;
+    font-weight: 600;
+    font-size: 18px;
+    transition: color 0.3s ease;
+  }
+  footer a:hover {
+    color: #e0e7ff;
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media(max-width: 768px) {
+    .card-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .notice-board, .notifications-board, .timetable-overview {
+      max-height: 280px;
+      padding: 20px 25px;
+    }
+  }
+  @media(max-width: 480px) {
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+    .search-bar {
+      font-size: 1rem;
+      padding: 12px 16px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg px-4">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="home.html">
+      <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f393.png" alt="Logo" />
+      SmartClass
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link active-link" href="home.html"><i class="bi bi-house-door me-1"></i> Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2 me-1"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="faculty.html"><i class="bi bi-people me-1"></i> Faculty</a></li>
+        <li class="nav-item"><a class="nav-link" href="subjects.html"><i class="bi bi-book me-1"></i> Subjects</a></li>
+        <li class="nav-item"><a class="nav-link" href="timetable.html"><i class="bi bi-calendar3 me-1"></i> Timetable</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="page-container container mt-4">
+
+  <div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p>Overview of your classes, students, faculty, announcements, and notifications</p>
+  </div>
+
+  <!-- Summary Cards -->
+  <section class="card-grid mb-4">
+    <div class="summary-card" onclick="window.location.href='students.html'">
+      <i class="bi bi-people-fill summary-icon"></i>
+      <div class="summary-details">
+        <div class="summary-info">Total Students</div>
+        <div class="summary-number" id="totalStudents">Loading...</div>
+      </div>
+    </div>
+
+    <div class="summary-card" onclick="window.location.href='faculty.html'">
+      <i class="bi bi-person-badge summary-icon"></i>
+      <div class="summary-details">
+        <div class="summary-info">Total Faculty</div>
+        <div class="summary-number" id="totalFaculty">Loading...</div>
+      </div>
+    </div>
+
+    <div class="summary-card" onclick="window.location.href='classes.html'">
+      <i class="bi bi-calendar-event summary-icon"></i>
+      <div class="summary-details">
+        <div class="summary-info">Total Classes</div>
+        <div class="summary-number" id="totalClasses">Loading...</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="row g-4">
+    <!-- Announcements -->
+    <aside class="col-md-6">
+      <div class="notice-board">
+        <h4>Announcements</h4>
+        <input type="search" id="announcementSearch" class="search-bar" placeholder="Search announcements..." />
+        <div id="announcementsList"></div>
+        <button class="btn btn-primary mt-3" onclick="window.location.href='NA.html'">Manage Announcements</button>
+      </div>
+    </aside>
+
+    <!-- Notifications -->
+    <aside class="col-md-6">
+      <div class="notifications-board">
+        <h4>Notifications</h4>
+        <input type="search" id="notificationSearch" class="search-bar" placeholder="Search notifications..." />
+        <div id="notificationsList"></div>
+        <button class="btn btn-primary mt-3" onclick="window.location.href='NA.html'">Manage Notifications</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Timetable Overview -->
+  <section class="mt-4 timetable-overview">
+    <h4>Class Schedule Overview</h4>
+    <ul class="schedule-list" id="scheduleList"></ul>
+  </section>
+
+</div>
+
+<footer>
+  <p>&copy; 2025 SmartClass. All rights reserved.</p>
+  <p>Contact:
+    <a href="mailto:support@smartclass.com">support@smartclass.com</a> | Phone: +91 6201148952
+  </p>
+  <p>Designed with ❤️ for students and teachers.</p>
+</footer>
+
+<script>
+  const storedData = JSON.parse(localStorage.getItem('smartClassDashboardData')) || {
+    totalStudents: 420,
+    totalFaculty: 58,
+    totalClasses: 37,
+    announcements: [
+      { id: 1, text: "Final exams scheduled from Dec 10 - Dec 20." },
+      { id: 2, text: "College closed on Nov 25 for national holiday." },
+      { id: 3, text: "New research seminar this Friday at 3pm." }
+    ],
+    notifications: [
+      { id: 1, text: "Your assignment for Math is due Friday." },
+      { id: 2, text: "New message from faculty member John." },
+      { id: 3, text: "Update your profile details if needed." }
+    ],
+    schedules: [
+      { id: 1, className: "1A", subjects: ["Math", "English", "Science"] },
+      { id: 2, className: "2B", subjects: ["History", "Physics", "Chemistry"] },
+      { id: 3, className: "3C", subjects: ["Geography", "Biology", "Math"] },
+      { id: 4, className: "4D", subjects: ["English", "Arts", "PE"] }
+    ]
+  };
+
+  // Render totals
+  document.getElementById('totalStudents').innerText = storedData.totalStudents || '0';
+  document.getElementById('totalFaculty').innerText = storedData.totalFaculty || '0';
+  document.getElementById('totalClasses').innerText = storedData.totalClasses || '0';
+
+  // Render announcements with search filter
+  const announcementsContainer = document.getElementById('announcementsList');
+  function renderAnnouncements(filter = '') {
+    const filtered = storedData.announcements.filter(a => a.text.toLowerCase().includes(filter.toLowerCase()));
+    announcementsContainer.innerHTML = filtered
+      .map(a => `<div class="notice-item">${a.text}</div>`)
+      .join('');
+  }
+  renderAnnouncements();
+  document.getElementById('announcementSearch').addEventListener('input', e => renderAnnouncements(e.target.value));
+
+  // Render notifications with search filter
+  const notificationsContainer = document.getElementById('notificationsList');
+  function renderNotifications(filter = '') {
+    const filtered = storedData.notifications.filter(n => n.text.toLowerCase().includes(filter.toLowerCase()));
+    notificationsContainer.innerHTML = filtered
+      .map(n => `<div class="notice-item">${n.text}</div>`)
+      .join('');
+  }
+  renderNotifications();
+  document.getElementById('notificationSearch').addEventListener('input', e => renderNotifications(e.target.value));
+
+  // Render schedule
+  const scheduleList = document.getElementById('scheduleList');
+  scheduleList.innerHTML = storedData.schedules
+    .map(s => `<li onclick="window.location.href='timetable.html?class=${s.className}'">Class ${s.className} - ${s.subjects.join(", ")}</li>`)
+    .join('');
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
